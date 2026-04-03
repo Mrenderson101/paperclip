@@ -80,6 +80,11 @@ import {
   agentConfigurationDoc as hermesAgentConfigurationDoc,
   models as hermesModels,
 } from "hermes-paperclip-adapter";
+import {
+  execute as openrouterExecute,
+  testEnvironment as openrouterTestEnvironment,
+} from "@paperclipai/adapter-openrouter/server";
+import { agentConfigurationDoc as openrouterAgentConfigurationDoc, models as openrouterModels } from "@paperclipai/adapter-openrouter";
 import { BUILTIN_ADAPTER_TYPES } from "./builtin-adapter-types.js";
 import { buildExternalAdapters } from "./plugin-loader.js";
 import { getDisabledAdapterTypes } from "../services/adapter-plugin-store.js";
@@ -216,6 +221,14 @@ const hermesLocalAdapter: ServerAdapterModule = {
   detectModel: () => detectModelFromHermes(),
 };
 
+const openrouterAdapter: ServerAdapterModule = {
+  type: "openrouter",
+  execute: openrouterExecute,
+  testEnvironment: openrouterTestEnvironment,
+  models: openrouterModels,
+  agentConfigurationDoc: openrouterAgentConfigurationDoc,
+};
+
 const adaptersByType = new Map<string, ServerAdapterModule>();
 
 // For builtin types that are overridden by an external adapter, we keep the
@@ -237,6 +250,7 @@ function registerBuiltInAdapters() {
     geminiLocalAdapter,
     openclawGatewayAdapter,
     hermesLocalAdapter,
+    openrouterAdapter,
     processAdapter,
     httpAdapter,
   ]) {
