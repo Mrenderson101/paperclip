@@ -502,7 +502,9 @@ export async function startServer(): Promise<StartedServer> {
     authReady = true;
   }
   
-  const listenPort = await detectPort(config.port);
+  const listenPort = process.env.PAPERCLIP_FORCE_PORT
+    ? parseInt(process.env.PAPERCLIP_FORCE_PORT, 10)
+    : await detectPort(config.port);
   if (listenPort !== config.port) {
     config.port = listenPort;
   }
